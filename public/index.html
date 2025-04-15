@@ -13,28 +13,30 @@
     <header>
         <nav class="navbar">
             <div class="logo">Portfolio</div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#contact">Contact</a></li>
-                <li><button class="theme-toggle" aria-label="Toggle theme">
-                    <i class="fas fa-moon"></i>
-                </button></li>
+                <li>
+                    <button class="theme-toggle" aria-label="Toggle theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </li>
             </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
         </nav>
-        
     </header>
 
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content" data-aos="fade-up">
+            
             <div class="hero-text">
                 <h1>Hi, I'm <span class="highlight">Panchal Shubham</span></h1>
                 <h2>App Developer</h2>
@@ -85,6 +87,17 @@
         <div class="container">
             <h2 class="section-title" data-aos="fade-up">My Projects</h2>
             <div class="projects-grid">
+                <div class="project-card" data-aos="fade-up">
+                    <img src="images/project1.jpg" alt="Project 1">
+                    <div class="project-info">
+                        <h3>E-HealthHub</h3>
+                        <p>Description of project 1</p>
+                        <div class="project-links">
+                            <a href="https://github.com/shubham21panchal02/Ehealthhub" class="btn primary">View Demo</a>
+                            <a href="https://github.com/shubham21panchal02/Ehealthhub" class="btn secondary">Source Code</a>
+                        </div>
+                    </div>
+                </div>
                 <div class="project-card" data-aos="fade-up">
                     <img src="images/project1.jpg" alt="Project 1">
                     <div class="project-info">
@@ -196,11 +209,51 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>&copy; 2024 Your Name. All rights reserved.</p>
+            <p>&copy; 2025 Panchal Shubham. All rights reserved.</p>
         </div>
     </footer>
 
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script src="js/main.js"></script>
+    <script>
+    document.getElementById('contact-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const submitButton = e.target.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Sending...';
+        
+        const formData = {
+            name: document.getElementById('name').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            message: document.getElementById('message').value.trim()
+        };
+
+        try {
+            const response = await fetch('/send-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+            
+            if (data.success) {
+                alert('Message sent successfully!');
+                document.getElementById('contact-form').reset();
+            } else {
+                alert(data.message || 'Error sending message. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Network error. Please check your connection and try again.');
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = 'Send Message';
+        }
+    });
+    </script>
 </body>
 </html> 
